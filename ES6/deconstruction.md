@@ -15,7 +15,7 @@ const leader = zhuawa.leader
 const { teacher, leader } = zhuawa
 
 // 数组
-const arr = ['', '', '']
+const arr = ['', '', '', '']
 const a = arr[0]
 const b = arr[1]
 
@@ -30,7 +30,7 @@ const zhuawa = {
     name: '云隐',
     age: 30
   },
-  leader: '黄小杨'
+  leader: '黄小杨',
   name: 'es6'
 }
 
@@ -61,9 +61,9 @@ const {
 } = zhuawa
 ```
 
-### 追问
+### 追问： 你在什么情况下使用过解构/使用场景
 
-#### 你在什么情况下使用过解构/使用场景
+### 解构传递参数- 数组传参
 
 ```js
 // 数组传参
@@ -110,6 +110,7 @@ const getCourse = () => {
 }
 
 const { teacher, leader } = getCourse()
+// 可读性增加，但是增加了上层对底层的依赖
 // 依赖底层逻辑 会影响上层业务 增加耦合
 ```
 
@@ -145,6 +146,7 @@ let b = 2
       } 
     })
 
+// now 
     const {
       code,
       data,

@@ -3,6 +3,26 @@
 #### 作用域链
 
 ```js
+    let a = 'global'
+    console.log(a)
+
+    function course() {
+      let b = 'zhuawa'
+      console.log(b)
+
+      session() 
+      function session() {
+        let c = 'this'
+        console.log(c)
+
+        teacher() 
+        function teacher() {
+          let d = 'yy'
+          console.log(d)
+        }
+      }
+    }
+    course() 
 
 ```
 
@@ -24,6 +44,9 @@ fn()
 ```js
 function fn() {
     console.log('隐式绑定', this.a)
+}
+const obj = {
+  a: 1
 }
 
 obj.fn = fn
@@ -110,7 +133,7 @@ Function.prototype.newBind = function () {
 }
 ```
 
--   2. apply 应用 - 多传参数组化
+-   2. apply 应用 - 多传参 数组化
 
 ```js
 Math.max(2, 4, 5, 6)
@@ -153,7 +176,7 @@ function mail() {
     }
 }
 
-const evelop = mail()
+const envelope = mail()
 envelop()
 ```
 
@@ -162,7 +185,7 @@ envelop()
 #### 函数作为参数
 
 ```js
-function envelop(fn) {
+function envelope(fn) {
     let content = 1
     fn()
 }
@@ -170,7 +193,7 @@ function mail() {
     console.log(content)
 }
 
-evelop(mail)
+envelope(mail)
 ```
 
 #### 函数嵌套(函数作为参数的变式)
@@ -232,7 +255,7 @@ function createIncrement() {
     function log() {
         console.log(message)
     }
-    retrun[(increment, log)]
+    return[increment, log]
 }
 
 const [increment, log] = createIncrement()

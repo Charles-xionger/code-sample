@@ -1,6 +1,6 @@
-# 对象是什么？ 为什么要面向对象？
+## 对象是什么？ 为什么要面向对象？
 
-#### 特点：面向对象（OOP）：逻辑迁移灵活、代码可复用性高、高度模块化
+特点：面向对象（OOP）：逻辑迁移灵活、代码可复用性高、高度模块化
 
 ---
 
@@ -8,8 +8,8 @@
 
 -   对象是对于单个物体的简单抽象
 -   对象是一个容器、封装了属性&方法
-    ** 属性：对象的状态
-    ** 方法：对象的行为
+    *   属性：对象的状态
+    *   方法：对象的行为
 
 ```js
 // 简单对象
@@ -32,9 +32,9 @@ function Course() {
 
 ---
 
-## 构造函数 - 生成对象
+## 构造函数 - 生成对象 constructor
 
-#### 需要一个模板 -表征一类的共同特征，从而生成对象
+#### 需要一个模板 - 表征一类的共同特征，从而生成对象
 
 #### 类即是对象模板
 
@@ -60,7 +60,7 @@ const course = new Course()
 
 #### 追问： 构造函数， 不初始化， 可以用吗？ / 不能使用 undefined
 
-#### 如果需要使用，如何做兼容
+#### 如果需要使用，如何做兼容？ 在内部生成实例
 
 ```js
 function Course() {
@@ -99,9 +99,10 @@ function Course(teacher, leader) {
 const course1 = new Course('云隐', '黄小杨')
 const course2 = new Course('云隐', '黄小杨')
 course2.leader = '可可'
+// 生成的实例之间属性是隔离的
 ```
 
-### constructor 是什么？
+## constructor 是什么？
 
 ```js
 function Course(teacher, leader) {
@@ -110,10 +111,14 @@ function Course(teacher, leader) {
 }
 
 const course = new Course('云隐', '黄小杨')
+
+course.constructor = Course // true
+Course.prototype
 ```
 
 -   1. 每个对象创建时会自动拥有一个构造函数属性 constructor
 -   2. constructor 继承自原型对象，指向构造函数的引用
+ ![78a1cd23b185d65facb8154c4fab084](image/78a1cd23b185d65facb8154c4fab084.jpg)
 
 #### 追问： 使用构造函数 存在什么问题？ /会有什么性能问题？
 
@@ -135,7 +140,7 @@ const course2 = new Course('OOP')
 
 ---
 
-#### 原型对象
+## 原型对象
 
 ```js
 function Course() {}
@@ -144,11 +149,11 @@ const course2 = new Course()
 ```
 
 -   1. 构造函数： 用来初始化创建对象的函数 -Course
-        - 自动给构造函数赋予一个属性 prototype，该属性实际等于实例对象的原型对象
+        - 自动给构造函数赋予一个属性 prototype，该属性实际等于实例对象的原型对象`course.__proto__ === Course.prototype`
 
 *   2. 实例对象： course1 就是实例对象，根据原型创建出来的实例
-        - 每个实例对象都有个`__proto__`
-        - 每个实例对象都有个 constructor 属性
+        - 每个实例对象都有个`__proto__` ——隐式原型
+        - 每个实例对象都有个 constructor 属性 
         - constructor 由继承而来，并指向当前构造函数
 
 *   3. 原型对象 Course.prototype
@@ -169,6 +174,7 @@ function Course(name) {
     //     return `开始${name}课`;
     // };
 }
+// 在原型上挂载属性和方法，实例可以共享原型上的方法和属性
 Course.prototype.startCourse = function (name) {
     return `开始${name}课`
 }
@@ -177,7 +183,15 @@ const course1 = new Course('es6')
 const course2 = new Course('OOP')
 ```
 
-### 继承
+## 构造函数， 原型函数，实例函数
+
+![1636197163179](image/1636197163179.png)
+
+## 构造函数， Object 原型上的关系
+
+![1636197295580](image/1636197295580.png)
+
+## 继承
 
 #### 在原型对象的所有属性和方法，都能被实例所共享
 
@@ -232,7 +246,7 @@ game1.skin.push('sss')
 
 ```js
 // Game类
-function Game() {
+function Game(arg) {
     this.name = 'lol'
     this.skin = ['s']
 }
@@ -240,7 +254,7 @@ Game.prototype.getName = function () {
     return this.name
 }
 // LOL 类
-function LOL() {
+function LOL(arg) {
     // 子类函数内部调用父类函数
     Game.call(this, arg)
 }
@@ -256,7 +270,7 @@ const game3 = new LOL()
 
 ```js
 // Game类
-function Game() {
+function Game(arg) {
     this.name = 'lol'
     this.skin = ['s']
 }
@@ -264,7 +278,7 @@ Game.prototype.getName = function () {
     return this.name
 }
 // LOL 类
-function LOL() {
+function LOL(arg) {
     // 子类函数内部调用父类函数
     Game.call(this, arg)
 }
@@ -336,7 +350,7 @@ function LOL(arg) {
 }
 // LOL 继承Game类
 // LOL.prototype = Object.create(Game.prototype);
-LOL.prototype = object.assign(Game.prototype, Store.prototype)
+LOL.prototype = Object.assign(Game.prototype, Store.prototype)
 LOL.prototype.constructor = LOL
 
 const game4 = new LOL()

@@ -1,12 +1,13 @@
-const sum = (arr) => {
-  let res = 0
-
-  arr.forEach((each) => {
-    res += each
-  })
-  return res
+const zhuawa = {
+  teacher: {
+    name: '云隐',
+    age: 30
+  },
+  leader: '黄小杨',
+  name: 'es6'
 }
-var arr = [1, 2, 3, 4]
 
-
-console.log(sum(arr))
+const { teacher: {
+  name, age
+}, leader, name: className
+} = zhuawa
