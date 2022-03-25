@@ -85,13 +85,13 @@
 // obj.a = 2
 
 
-var obj = {}
+// var obj = {}
 
-Object.defineProperty(obj, 'a', {
-  value: 1
-})
-console.log(Object.keys(obj)) //Object.keys() 方法会返回一个由一个给定对象的自身可枚举属性组成的数组
-console.log(Object.getOwnPropertyNames(obj))
+// Object.defineProperty(obj, 'a', {
+//   value: 1
+// })
+// console.log(Object.keys(obj)) //Object.keys() 方法会返回一个由一个给定对象的自身可枚举属性组成的数组
+// console.log(Object.getOwnPropertyNames(obj))
 
 
 // Object.defineProperty 初衷是什么？

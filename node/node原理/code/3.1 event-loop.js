@@ -1,6 +1,12 @@
+const fs = require('fs')
 async function async1 () {
   console.log('async1 start') // 2
-  await async2()
+  await async2()  // 等价于 
+  // new Promise(() => {
+  //   console.log('async2')
+  // }).then(() => {
+  //   console.log('async1 end')
+  // })
   console.log('async1 end') // a 8
 }
 async function async2 () {
@@ -14,7 +20,12 @@ setTimeout(function () {
   }, 0);
   setImmediate(() => console.log('setImmediate')); // b-2  11
 }, 0)
-
+fs.readFile(__filename, () => {
+  setTimeout(function () {
+    console.log('setTimeout2');
+  }, 0);
+  setImmediate(() => console.log('setImmediate1'));
+})
 process.nextTick(() => console.log('nextTick')); // 7
 async1();
 new Promise(function (resolve) {
