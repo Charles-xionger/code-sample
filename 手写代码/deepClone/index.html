@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>深拷贝</title>
+</head>
+
+<body>
+  <h1>赋值 ，浅拷贝， 深拷贝</h1>
+  <script>
+    // //赋值
+    // let a = { n: 1 }
+    // let b = a
+    // a.x = a = { n: 2 }
+
+    // // 考虑下面代码的执行结果
+    // console.log(a.x)  // undefined
+    // console.log(b.x)  // { n: 2 }
+
+    // 为什么会得到这样的结果？
+    // 点运算符的优先等级高, 先执行 a.x = undefined , 再执行 a = { n: 2 }, b 和 a 指向同一个堆地址。
+
+    /**
+     * 浅拷贝
+     * 定义： 循环遍历对象一遍，将该对象上的属性赋值到另一个对象上。在这个过程中属性值为基本类型则拷贝基本类型的值；若该值为引用类型，则拷贝的就是堆内存中的地址
+    */
+    // 基本实现
+    // function deepClone (source) {
+    //   if (typeof source !== 'object' || source == null) {
+    //     return source
+    //   }
+
+    //   const traget = {} // 定义空对象
+
+    //   // 遍历目标对象上的属性，将其赋值到新的对象上
+    //   for (let [key, value] of Object.entries(source)) {
+    //     traget[key] = value
+    //   }
+
+    //   return traget
+    // }
+
+    // function deepClone (source) {
+    //   if (typeof source !== 'object' || source == null) {
+    //     return source
+    //   }
+    //   // 判断传入的值是对象还是数组， Array,isArray(source)
+    //   const target = Array.isArray(source) ? [] : {}
+
+    //   // 遍历目标对象上的属性，将其赋值到新的对象上
+    //   for (let [key, value] of Object.entries(source)) {
+    //     // 增加判断条件
+    //     if (typeof value === 'object' && value !== null && !(value instanceof RegExp)) {
+    //       target[key] = deepClone(value)
+    //     } else {
+    //       target[key] = value
+    //     }
+    //   }
+
+    //   return target
+    // }
+
+    function deepClone (source) {
+      if (typeof source !== 'object' || source == null) {
+        return source
+      }
+
+      let target = Array.isArray(source) ? [] : {}
+
+      for (let [key, value] of Object.entries(source)) {
+        if (typeof value === 'object' && value !== null && !(value instanceof RegExp)) {
+          target[key] = deepClone(value)
+        } else {
+          target[key] = value
+        }
+      }
+
+      return target
+    }
+
+    const obj = {
+      a: 10,
+      b: undefined,
+      c: /\w/g,
+      d: function () {
+        return true;
+      },
+      e: {
+        m: 20,
+        n: 30
+      },
+      set: new Set([10, 20, 30]),
+      map: new Map([['a', 10], ['b', 20]])
+    };
+
+    const result = deepClone(obj);
+    // result.e.m = 100;S
+    console.log('拷贝前：', obj);
+    console.log('拷贝后：', result);
+
+
+
+  </script>
+
+</body>
+
+</html>

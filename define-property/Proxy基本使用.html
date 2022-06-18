@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proxy 基本使用</title>
+</head>
+
+<body>
+  <h1>Proxy 基本使用</h1>
+  <script>
+    const data = {
+      name: '张三',
+      age: 20
+    }
+
+    const proxyData = new Proxy(data, {
+      get (target, key, receiver) {
+        const result = Reflect.get(target, key, receiver)
+        console.log('get', key)
+        return result // 返回结果
+      },
+      set (target, key, val, receiver) {
+        const result = Reflect.set(target, key, val, receiver)
+        console.log('set', key, val)
+        console.log('result', result) // 是否设置成功
+        return result
+      },
+      deletProperty (target, key) {
+        const result = Reflect.deleteProperty(target, key)
+        console.log('delete Property', key)
+        return result // 是否删除成功
+      }
+    })
+  </script>
+</body>
+
+</html>

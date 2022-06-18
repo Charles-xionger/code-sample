@@ -26,19 +26,47 @@ Function.prototype.myCall = function (context, ...args) {
 
 }
 
+// 使用 symbol类型扩展属性
+Function.prototype.customCall = function (context, ...args) {
+  context = context ? Object(context) : window
+
+  const fnKey = Symbol() // 不会出现属性名覆盖
+  context[fnKey] = this // this 指当前函数
+
+  const res = context[fnKey](...args) // 绑定this
+  delete context[fnKey] // 清理fn, 防止污染
+
+  return res
+}
 
 // const result = foo.myCall(obj, 3, 4)
 // console.log(result)
 
 // 自定义 apply
-Function.prototype.myApply = function (context, arr) {
+Function.prototype.myApply = function (context, args) {
   context = context ? Object(context) : window
+
   context.fn = this
 
-  let result = arr ? context.fn(...arr) : context.fn()
+  const result = context.fn(...args)
 
   delete context.fn
   return result
+}
+
+// 增加 Symbol()
+
+Function.prototype.customApply = function (context, args) {
+  context ? Object(context) : window
+
+  const fnKey = Symbol() // 不会出现属性名称的覆盖
+  context[fnKey] = this // this就是当前的函数
+
+  const res = context[fnKey](...args) // 绑定了this
+
+  delete context[fnkey] // 清理掉fn, 防止污染
+
+  return res
 }
 
 // const result = foo.myApply(obj, [3, 4])
@@ -55,8 +83,9 @@ Function.prototype.myBind1 = function () {
   const args = Array.prototype.slice.call(arguments)
   const newThis = args.shift() // 新的this指向
 
-  return function () {
-    return _this.apply(newThis, args) // 调用apply 修改返回的函数的this指向
+  return function (...newArgs) {
+    // args.concat(newArgs)
+    return _this.apply(newThis, [...args, ...newArgs]) // 调用apply 修改返回的函数的this指向
   }
 }
 
@@ -72,8 +101,6 @@ Function.prototype.myBind2 = function () {
   let newThis = args.shift()
 
   const foo = function () { }
-
-
 
   const fBound = function () {
     const args1 = Array.prototype.slice.call(arguments)

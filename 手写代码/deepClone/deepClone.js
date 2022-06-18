@@ -7,6 +7,16 @@ const Obj = {
   number: [1, 2, 3, 4]
 }
 
+/**
+ * JSON.parse(JSON.stringify(obj)) 能实现简单数据结构的拷贝，但是对于函数，以及Map，Set.
+ * 也无法解决循环引用的问题
+ */
+
+/**
+ * @param {*} source 
+ * @returns 
+ */
+// 简单的深拷贝
 const deepClone = function (source = {}) {
   if (typeof source !== 'object' || source == null) {
     return source

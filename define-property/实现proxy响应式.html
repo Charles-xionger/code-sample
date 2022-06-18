@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实现Proxy响应式</title>
+</head>
+
+<body>
+  <h1>实现Proxy响应式</h1>
+  <script>
+    function reactive (target = {}) {
+      if (typeof target !== 'object' || target == null) {
+        return target
+      }
+
+      // 代理配置
+      const proxyConf = {
+        get (target, key, receiver) {
+          // 只处理本身的属性（非原型）
+          const ownKeys = Reflect.ownKeys(target)
+          // ownKeys includes key
+          if (ownKeys.includes(key)) {
+            console.log('get', key)
+          }
+          const result = Reflect.get(target, key, receiver)
+          // 如果 result 是一个对象或者数组 深度监听
+          return reactive(result) // 返回结果
+        },
+        set (target, key, val, receiver) {
+          // 重复的数据不处理
+          if (val === target[key]) {
+            return true
+          }
+          const result = Reflect.set(target, key, val, receiver)
+          console.log('set', key, val)
+          return result  // 是否设置成功
+        },
+        deletProperty (target, key) {
+          const result = Reflect.deleteProperty(target, key)
+          console.log('delete Property', key)
+          return result // 是否删除成功
+        }
+      }
+
+      // 生成代理对象
+      const observed = new Proxy(target, proxyConf)
+      return observed
+    }
+
+    // 测试数据
+    const data = {
+      name: 'zhangsan',
+      age: 20
+    }
+
+    const proxyData = reactive(data)
+  </script>
+</body>
+
+</html>

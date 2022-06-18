@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>柯里化函数</title>
+</head>
+
+<body>
+  写一个柯里化函数
+  <script>
+    function add (a, b, c) {
+      return a + b + c
+    }
+    // 思路
+    // curry 函数返回值是一个函数fn
+    // 执行fn, 返回的也是函数。 如 add(1)
+    // 达到传入参数的长度，返回执行结果。 add(1)（2）(3)
+
+
+    function curry (fn) {
+      const fnArgsLength = fn.length // 原函数所需参数的长度
+      let args = []  // 存放传入的参数
+
+      function calc (...newArgs) {
+        // 积累参数
+        args = [
+          ...args, ...newArgs
+        ]
+
+        if (args.length < fnArgsLength) {
+          // 参数不够， 返回函数
+          return calc
+        } else {
+          // 参数够了， 返回执行结果
+          return fn.apply(this, args.slice(0, fnArgsLength))
+        }
+      }
+
+      return calc
+    }
+
+    const curryAdd = curry(add)
+
+    // curryAdd(1)(2)(3)
+  </script>
+</body>
+
+</html>
